@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.RestController;
 import es.peenyaa7.weigraph.constants.ApiRoutes;
 import es.peenyaa7.weigraph.dto.LoginRequest;
 import es.peenyaa7.weigraph.dto.LoginResponse;
+import es.peenyaa7.weigraph.dto.UserInfo;
+import es.peenyaa7.weigraph.model.Role;
 import es.peenyaa7.weigraph.model.User;
 import es.peenyaa7.weigraph.security.AuthenticationService;
 import es.peenyaa7.weigraph.security.JwtService;
@@ -33,6 +35,12 @@ public class AuthController {
         LoginResponse loginResponse = LoginResponse.builder()
             .token(jwtToken)
             .expiresIn(jwtService.getExpirationTime())
+            .userInfo(
+                UserInfo.builder()
+                    .username(authenticatedUser.getUsername())
+                    .isAdmin(Role.ADMIN.equals(authenticatedUser.getRole()))
+                    .build()
+                )
             .build();
 
         return ResponseEntity.ok(loginResponse);

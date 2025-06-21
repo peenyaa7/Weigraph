@@ -6,15 +6,12 @@ import lombok.Data;
 
 @Data
 @Builder
-public class LoginResponse {
+public class UserInfo {
     
     @NotNull
-    private String token;
+    private String username;
 
     @NotNull
-    private long expiresIn;
-
-    @NotNull
-    private UserInfo userInfo;
+    private boolean isAdmin;
 
 }

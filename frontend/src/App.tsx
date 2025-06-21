@@ -1,10 +1,11 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { PrivateRoute } from './router/PrivateRoute';
 import { HomeView } from './views/HomeView/HomeView';
-import AuthLayout from './layouts/AuthLayout';
 import { LoginView } from './views/LoginView/LoginView';
-import MainLayout from './layouts/MainLayout';
 import { AddWeightView } from './views/AddWeightView/AddWeightView';
+import { ProfileView } from './views/ProfileView/ProfileView';
+import AuthLayout from './layouts/AuthLayout';
+import MainLayout from './layouts/MainLayout';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         }>
           <Route index element={<HomeView />} />
           <Route path="/add-weight" element={<AddWeightView />} />
+          <Route path="/profile" element={<ProfileView />} />
         </Route>
 
         {/* Fallback */}

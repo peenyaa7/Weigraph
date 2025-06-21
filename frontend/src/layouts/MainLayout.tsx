@@ -7,14 +7,16 @@ export default function MainLayout() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* Header */}
+    <div>
+
+      {/* Navbar */}
       <header className="bg-blue-600 text-white px-4 py-3 flex justify-between items-center">
         <h1 className="text-xl font-semibold">Weigraph</h1>
         <nav className="flex gap-4">
-          <Link to="/" className="hover:underline">Inicio</Link>
-          {isAdmin && <Link to="/users" className="hover:underline">Usuarios</Link>}
-          <button onClick={() => { logout(); navigate("/login"); }} className="hover:underline">Salir</button>
+          <Link to="/" className="hover:underline">Home</Link>
+          {isAdmin && <Link to="/users" className="hover:underline">Users</Link>}
+          <Link to="/profile" className="hover:underline">Profile</Link>
+          <button onClick={() => { logout(); navigate("/login"); }} className="hover:underline">Logout</button>
         </nav>
       </header>
 
