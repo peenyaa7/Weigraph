@@ -1,7 +1,4 @@
-import axios from 'axios';
-
-const API_URL = process.env.API_URL || 'http://localhost:8080/api';
-
+import axios from './axios';
 
 export interface LoginRequest {
     username: string;
@@ -19,8 +16,7 @@ export interface LoginResponse {
 
 export const loginUser = async (loginRequest: LoginRequest): Promise<LoginResponse> => {
 
-    const response = await axios.post<LoginResponse>(`${API_URL}/login`, loginRequest);
-    console.log(response.data);
+    const response = await axios.post<LoginResponse>(`/login`, loginRequest);
     const { token, expiresIn, userInfo } = response.data;
     
     localStorage.setItem('token', token);
