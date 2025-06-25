@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
+import es.peenyaa7.weigraph.constants.ApiRoutes;
 import es.peenyaa7.weigraph.model.User;
 import es.peenyaa7.weigraph.service.UserService;
 import jakarta.servlet.FilterChain;
@@ -76,6 +77,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             handlerExceptionResolver.resolveException(request, response, null, e);
         }
 
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        // If is login
+        return request.getRequestURI().equals(ApiRoutes.LOGIN_URL);
     }
     
 
