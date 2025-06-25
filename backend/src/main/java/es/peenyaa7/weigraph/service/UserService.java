@@ -1,6 +1,5 @@
 package es.peenyaa7.weigraph.service;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,6 @@ public class UserService implements UserDetailsService {
         User user = User.builder()
             .username(username)
             .password(encodedPassword)
-            .entries(new ArrayList<>())
             .role(Role.USER)
             .build();
 

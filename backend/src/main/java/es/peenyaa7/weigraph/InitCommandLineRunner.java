@@ -1,6 +1,5 @@
 package es.peenyaa7.weigraph;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +40,6 @@ public class InitCommandLineRunner implements CommandLineRunner {
                 .username(username)
                 .password(passwordEncoder.encode(password))
                 .role(Role.ADMIN)
-                .entries(new ArrayList<>())
                 .build();
             
             user = userService.create(user);
