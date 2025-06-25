@@ -7,5 +7,6 @@ public class ApiRoutes {
     public static final String LOGIN_URL = COMMON_PATH + "/login";
     public static final String PROFILE_URL = COMMON_PATH + "/profile";
     public static final String WEIGHTS_URL = COMMON_PATH + "/weights";
+    public static final String IMPORT_URL = COMMON_PATH + "/import";
 
 }

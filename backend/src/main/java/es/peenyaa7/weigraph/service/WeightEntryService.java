@@ -18,5 +18,9 @@ public class WeightEntryService {
         return repository.findAll();
     }
 
+    public void saveAll(List<WeightEntry> weightEntriesToSave) {
+        repository.saveAll(weightEntriesToSave);
+    }
+
 
 }

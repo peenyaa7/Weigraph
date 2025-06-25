@@ -22,6 +22,24 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(getErrorsMap(errors));
     }
 
+    @ExceptionHandler(KgParseException.class)
+    public ResponseEntity<?> handleKgParseException(KgParseException ex) {
+        List<String> errors = Collections.singletonList(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getErrorsMap(errors));
+    }
+
+    @ExceptionHandler(DateParseException.class)
+    public ResponseEntity<?> handleDateParseException(DateParseException ex) {
+        List<String> errors = Collections.singletonList(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getErrorsMap(errors));
+    }
+
+    @ExceptionHandler(InvalidCSVHeaderException.class)
+    public ResponseEntity<?> handleInvalidCSVHeaderException(InvalidCSVHeaderException ex) {
+        List<String> errors = Collections.singletonList(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getErrorsMap(errors));
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         List<String> errors = ex.getBindingResult().getFieldErrors().stream().map(FieldError::getDefaultMessage).collect(Collectors.toList());
