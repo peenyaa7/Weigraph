@@ -11,7 +11,7 @@ export const useWeights = () => {
             .then((weightEntriesResponse: WeightEntriesResponse) => {
 
                 let weights: Weight[] = [];
-                weightEntriesResponse.entries.forEach(entry => {
+                weightEntriesResponse.weightEntries.forEach(entry => {
                     weights.push({
                         date: entry.date,
                         weight: entry.weight

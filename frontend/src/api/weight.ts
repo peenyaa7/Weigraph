@@ -6,7 +6,7 @@ export interface WeightEntryResponse {
 }
 
 export interface WeightEntriesResponse {
-    entries: WeightEntryResponse[];
+    weightEntries: WeightEntryResponse[];
 }
 
 export const getWeights = async (): Promise<WeightEntriesResponse> => {
