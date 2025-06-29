@@ -2,7 +2,9 @@
   "name": "weigraph",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "dependencies": {
+    "@tailwindcss/vite": "^4.1.11",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
@@ -11,22 +13,25 @@
     "@types/node": "^16.7.13",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.6.0",
+    "@vitejs/plugin-react-swc": "^3.10.2",
     "axios": "^1.10.0",
     "daisyui": "^5.0.43",
     "date-fns": "^4.1.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.2",
-    "react-scripts": "5.0.1",
-    "tailwindcss": "3",
+    "tailwindcss": "^4.1.11",
     "typescript": "^4.4.2",
+    "vite": "^7.0.0",
+    "vitest": "^3.2.4",
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "test": "vitest",
+    "preview": "vite preview"
   },
   "eslintConfig": {
     "extends": [
