@@ -3,7 +3,7 @@ import { getWeights, WeightEntriesResponse } from "../api/weight";
 import { Weight } from "../types/Weight";
 
 export const useWeights = () => {
-    const [weights, setWeights] = useState<Weight[]>();
+    const [weights, setWeights] = useState<Weight[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {

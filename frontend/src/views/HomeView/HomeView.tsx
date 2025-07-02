@@ -1,3 +1,4 @@
+import { WeightCalendar } from "../../components/WeightCalendar/WeightCalendar";
 import { useWeights } from "../../hooks/useWeights";
 
 export const HomeView = () => {
@@ -8,19 +9,17 @@ export const HomeView = () => {
         <div>
             <h1>HomeView</h1>
 
-            {
-                loading ? <p>Loading...</p> : null
-            }
-            {
-                weights && weights.length > 0 ? (<>
-                    <p>Weights:</p>
-                    <ul>
-                        {weights.map((weight, index) => (
-                            <li key={index}>{weight.date}: {weight.weight} kg</li>
-                        ))}
-                    </ul>
-                </>) : <p>No weights yet.</p>
-            }
+
+            <div className="p-4 space-y-4 flex justify-center m-auto">
+                {
+                    loading
+                        ? <div className="skeleton h-96 w-3xl"></div>
+                        : <WeightCalendar weights={weights} />
+                }
+
+
+            </div>
+                
         </div>
     );
 };
