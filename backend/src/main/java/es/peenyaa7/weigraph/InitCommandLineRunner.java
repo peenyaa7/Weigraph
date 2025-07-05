@@ -39,6 +39,7 @@ public class InitCommandLineRunner implements CommandLineRunner {
             User user = User.builder()
                 .username(username)
                 .password(passwordEncoder.encode(password))
+                .mustChangePassword("changeme".equals(password))
                 .role(Role.ADMIN)
                 .build();
             

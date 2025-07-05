@@ -11,21 +11,39 @@ export interface LoginResponse {
     userInfo: {
         username: string;
         isAdmin: boolean;
+        mustChangePassword: boolean;
     }
+}
+
+export interface ChangePasswordRequest {
+    newPassword: string;
 }
 
 export const loginUser = async (loginRequest: LoginRequest): Promise<LoginResponse> => {
 
-    const response = await axios.post<LoginResponse>(`/login`, loginRequest);
+    const response = await axios.post<LoginResponse>('/login', loginRequest);
     const { token, expiresIn, userInfo } = response.data;
     
     localStorage.setItem('token', token);
     localStorage.setItem('expiresIn', Date.now() + expiresIn);
     localStorage.setItem('username', userInfo.username);
     localStorage.setItem('isAdmin', userInfo.isAdmin ? 'true' : 'false');
+    localStorage.setItem('mustChangePassword', userInfo.mustChangePassword ? 'true' : 'false');
     
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     return response.data;
+}
+
+export const changePasswordCall = async (changePasswordRequest: ChangePasswordRequest): Promise<void> => {
+    const response = await axios.post<any>('/change-password', changePasswordRequest);
+    if (response.status == 200) {
+        localStorage.setItem('mustChangePassword', 'false');
+    } 
+    
+    if (response.status == 400) {
+        const errors: string[] = response.data['errors'];
+        throw new Error(errors.join(','));
+    }
 }
 
 export const logoutUser = async (): Promise<void> => {
@@ -33,6 +51,7 @@ export const logoutUser = async (): Promise<void> => {
     localStorage.removeItem('expiresIn');
     localStorage.removeItem('username');
     localStorage.removeItem('isAdmin');
+    localStorage.removeItem('mustChangePassword');
     axios.defaults.headers.common['Authorization'] = '';
 }
 
@@ -52,4 +71,8 @@ export const getToken = (): string | null => {
 
 export const isAdminUser = (): boolean => {
     return localStorage.getItem('isAdmin') === 'true';
+}
+
+export const getMustChangePassword = (): boolean => {
+    return localStorage.getItem('mustChangePassword') === 'true';
 }

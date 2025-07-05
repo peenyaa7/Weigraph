@@ -21,17 +21,6 @@ public class UserService implements UserDetailsService {
     private UserRepository repository;
 
     @Transactional
-    public User create(String username, String encodedPassword) {
-        User user = User.builder()
-            .username(username)
-            .password(encodedPassword)
-            .role(Role.USER)
-            .build();
-
-        return repository.save(user);
-    }
-
-    @Transactional
     public User create(User user) {
         return repository.save(user);
     }
@@ -40,10 +29,14 @@ public class UserService implements UserDetailsService {
         return repository.getByRole(Role.ADMIN);
     }
 
+    public Optional<User> getByUsername(String username) {
+        return repository.getByUsername(username);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        return repository.getByUsername(username).orElseThrow(() -> new UserNotFoundException("No username found."));
+        return this.getByUsername(username).orElseThrow(() -> new UserNotFoundException("No username found."));
     }
 
 }

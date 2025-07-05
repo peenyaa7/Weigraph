@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth"
 import { useNavigate } from "react-router-dom";
+import { DASHBOARD_PATH } from "../../constants/PathConstants";
 
 export const LoginView = () => {
 
@@ -18,8 +19,7 @@ export const LoginView = () => {
         
         try {
             await login(username, password);
-            console.log("Logged in");
-            navigate("/");
+            navigate(DASHBOARD_PATH);
         } catch (error) {
             setError("Invalid username or password");
         }

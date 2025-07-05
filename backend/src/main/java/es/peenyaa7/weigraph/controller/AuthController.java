@@ -3,6 +3,7 @@ package es.peenyaa7.weigraph.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.peenyaa7.weigraph.constants.ApiRoutes;
+import es.peenyaa7.weigraph.dto.ChangePasswordRequest;
 import es.peenyaa7.weigraph.dto.LoginRequest;
 import es.peenyaa7.weigraph.dto.LoginResponse;
 import es.peenyaa7.weigraph.dto.UserInfo;
@@ -14,12 +15,13 @@ import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 public class AuthController {
-    
+
     @Autowired
     private AuthenticationService authenticationService;
 
@@ -39,11 +41,19 @@ public class AuthController {
                 UserInfo.builder()
                     .username(authenticatedUser.getUsername())
                     .isAdmin(Role.ADMIN.equals(authenticatedUser.getRole()))
+                    .mustChangePassword(authenticatedUser.getMustChangePassword())
                     .build()
                 )
             .build();
 
         return ResponseEntity.ok(loginResponse);
     }
+
+    @PostMapping(ApiRoutes.CHANGE_PASSWORD_URL)
+    public ResponseEntity<?> changePasswordEndpoint(@RequestBody @Valid ChangePasswordRequest changePasswordRequest, @AuthenticationPrincipal User user) {
+        authenticationService.changePassword(user, changePasswordRequest);
+        return ResponseEntity.ok().build();
+    }
+    
     
 }

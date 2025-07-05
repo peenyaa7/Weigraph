@@ -16,29 +16,26 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<?> handleUserNotFoundException(UserNotFoundException ex) {
+    @ExceptionHandler({
+        UserNotFoundException.class
+    })
+    public ResponseEntity<?> handleNotFoundException(WeigraphException ex) {
         List<String> errors = Collections.singletonList(ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(getErrorsMap(errors));
     }
 
-    @ExceptionHandler(KgParseException.class)
-    public ResponseEntity<?> handleKgParseException(KgParseException ex) {
+    @ExceptionHandler({
+        DateParseException.class,
+        DefaultPasswordException.class,
+        InvalidCSVHeaderException.class,
+        KgParseException.class,
+    })
+    public ResponseEntity<?> handleBadRequestException(WeigraphException ex) {
         List<String> errors = Collections.singletonList(ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getErrorsMap(errors));
     }
 
-    @ExceptionHandler(DateParseException.class)
-    public ResponseEntity<?> handleDateParseException(DateParseException ex) {
-        List<String> errors = Collections.singletonList(ex.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getErrorsMap(errors));
-    }
-
-    @ExceptionHandler(InvalidCSVHeaderException.class)
-    public ResponseEntity<?> handleInvalidCSVHeaderException(InvalidCSVHeaderException ex) {
-        List<String> errors = Collections.singletonList(ex.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getErrorsMap(errors));
-    }
+    // ----------------------------------------------------------
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {

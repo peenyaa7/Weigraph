@@ -14,4 +14,7 @@ public class UserInfo {
     @NotNull
     private boolean isAdmin;
 
+    @NotNull
+    private boolean mustChangePassword;
+
 }

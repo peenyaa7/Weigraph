@@ -6,6 +6,7 @@ type AuthContextType = {
     isAdmin: boolean;
     username: string | null;
     login: (username: string, password: string) => void;
+    changePassword: (newPassword: string) => void;
     logout: () => void;
 };
 
