@@ -8,10 +8,10 @@ interface Props {
     weekWeights: Map<string, number>;
     weekAvg: number | undefined; // Average of the current week (if exist)
     lastWeekAvg: number | undefined; // Average of the last week (if exist)
-    lastWeight: number | undefined; // Last weight previous of this week (if exist)
+    lastWeightPreviousThisWeek: number | undefined; // Last weight previous of this week (if exist)
 }
 
-export const WeekCalendarRow = ({ currentMonth, firstOfWeek, lastOfWeek, weekWeights, weekAvg, lastWeekAvg, lastWeight: lastWeightPreviousThanThisWeek }: Props) => {
+export const WeekCalendarRow = ({ currentMonth, firstOfWeek, lastOfWeek, weekWeights, weekAvg, lastWeekAvg, lastWeightPreviousThisWeek }: Props) => {
 
     const getClass = (lastWeight: number, currentWeight: number) => {
         if (lastWeight === currentWeight) {
@@ -32,7 +32,7 @@ export const WeekCalendarRow = ({ currentMonth, firstOfWeek, lastOfWeek, weekWei
         </div>
     );
 
-    let lastWeight = lastWeightPreviousThanThisWeek;
+    let lastWeight = lastWeightPreviousThisWeek;
     while (day <= lastOfWeek) {
 
         const dayStr = format(day, DATE_FORMAT);

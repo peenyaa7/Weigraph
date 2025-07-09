@@ -37,7 +37,7 @@ export const WeightCalendar = ({ weights }: Props) => {
         let startDateOfPreviousWeek = addDays(firstOfCalendar, -daysInWeek);
         const weightsOfPreviousWeek = [];
         for (let i = 0; i < daysInWeek; i++) {
-            const dayStr = format(startDateOfPreviousWeek, 'yyyy-MM-dd');
+            const dayStr = format(startDateOfPreviousWeek, DATE_FORMAT);
             const weight = weightsMap.get(dayStr);
     
             if (weight) {
@@ -45,7 +45,7 @@ export const WeightCalendar = ({ weights }: Props) => {
             }
             startDateOfPreviousWeek = addDays(startDateOfPreviousWeek, 1);
         }
-        return weightsOfPreviousWeek.length > 0 ? weightsOfPreviousWeek.reduce((acc, e) => acc + e, 0) / daysInWeek : undefined;
+        return weightsOfPreviousWeek.length > 0 ? weightsOfPreviousWeek.reduce((acc, e) => acc + e, 0) / weightsOfPreviousWeek.length : undefined;
     }
 
     const existsOldestWeightPreviousThan = (date: Date): boolean => {
@@ -72,7 +72,7 @@ export const WeightCalendar = ({ weights }: Props) => {
     const getOldestWeightPreviousThan = (date: Date) : number | undefined => {
         if (existsOldestWeightPreviousThan(date)) {
             const previousDay = addDays(date, -1);
-            const lastWeight = weightsMap.get(format(previousDay, 'yyyy-MM-dd'));
+            const lastWeight = weightsMap.get(format(previousDay, DATE_FORMAT));
             if (lastWeight !== undefined) {
                 return lastWeight;
             } else {
@@ -82,9 +82,10 @@ export const WeightCalendar = ({ weights }: Props) => {
         return undefined;
     };
     
-    let lastWeekAvg = getWeightAvgOfLastWeekOfPreviousMonth();
     let day = firstOfCalendar;
-    let lastWeight = getOldestWeightPreviousThan(day);
+    let lastWeightPreviousThisWeek = getOldestWeightPreviousThan(day);
+    let lastWeight = lastWeightPreviousThisWeek;
+    let lastWeekAvg = getWeightAvgOfLastWeekOfPreviousMonth();
 
     const weekRowComponents = [];
 
@@ -124,10 +125,11 @@ export const WeightCalendar = ({ weights }: Props) => {
                 weekWeights={weightsOfWeek}
                 weekAvg={weekAvg}
                 lastWeekAvg={lastWeekAvg}
-                lastWeight={lastWeight}
+                lastWeightPreviousThisWeek={lastWeightPreviousThisWeek}
             />
         )
 
+        lastWeightPreviousThisWeek = lastWeight;
         lastWeekAvg = weekAvg;
 
     }
