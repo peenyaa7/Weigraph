@@ -35,7 +35,7 @@ export const WeekCalendarRow = ({ currentMonth, firstOfWeek, lastOfWeek, weekWei
     let lastWeight = lastWeightPreviousThanThisWeek;
     while (day <= lastOfWeek) {
 
-        const dayStr = format(day, 'yyyy-MM-dd');
+        const dayStr = format(day, DATE_FORMAT);
         const weight = weekWeights.get(dayStr);
         const isToday = isSameDay(day, new Date());
         const isDayOfCurrentMonth = isSameMonth(day, currentMonth);

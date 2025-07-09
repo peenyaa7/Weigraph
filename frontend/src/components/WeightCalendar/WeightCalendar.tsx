@@ -93,8 +93,8 @@ export const WeightCalendar = ({ weights }: Props) => {
         const weightsOfWeek: Map<string, number> = new Map();
         const weekEntries: number[] = [];
 
-        const firstOfWeek = startOfWeek(day);
-        const lastOfWeek = endOfWeek(day);
+        const firstOfWeek = startOfWeek(day, { weekStartsOn: 1});
+        const lastOfWeek = endOfWeek(day, { weekStartsOn: 1 });
         
         for (let i = 0; i < daysInWeek; i++) {
 

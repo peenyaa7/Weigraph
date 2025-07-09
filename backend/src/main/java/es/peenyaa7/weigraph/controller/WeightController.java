@@ -10,9 +10,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.peenyaa7.weigraph.constants.ApiRoutes;
 import es.peenyaa7.weigraph.dto.WeightEntriesResponse;
+import es.peenyaa7.weigraph.dto.WeightEntryRequest;
 import es.peenyaa7.weigraph.mapper.WeightMapper;
 import es.peenyaa7.weigraph.model.WeightEntry;
 import es.peenyaa7.weigraph.service.WeightEntryService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
 @RequestMapping(ApiRoutes.WEIGHTS_URL)
@@ -29,5 +33,12 @@ public class WeightController {
                 .build();
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping
+    public ResponseEntity<?> createNewWeight(@RequestBody WeightEntryRequest weightEntryRequest) {
+        weightEntryService.createOrUpdate(WeightMapper.INSTANCE.weightEntryRequestToWeightEntry(weightEntryRequest));
+        return ResponseEntity.ok().build();
+    }
+    
 
 }
