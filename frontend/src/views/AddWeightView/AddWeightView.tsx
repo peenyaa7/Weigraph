@@ -1,23 +1,36 @@
 import { useNavigate } from "react-router-dom";
 import { DASHBOARD_PATH } from "../../constants/PathConstants";
-import { useCreateWeight } from "../../hooks/useCreateWeight";
-import { useState } from "react";
-import { WeightEntryRequest } from "../../api/weight";
+import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { DATE_FORMAT } from "../../constants/DateConstants";
+import { useWeightsStore } from "../../hooks/useWeightsStore";
+import { Weight } from "../../types/Weight";
 
 export const AddWeightView = () => {
 
+	const error = undefined;
+    const today = new Date();
+    
+    const { store, loading, addOrUpdateWeight } = useWeightsStore();
 	const navigate = useNavigate();
-	const { createOrUpdateWeight, loading, error } = useCreateWeight();
-	const [weightEntryRequest, setWeightEntryRequest] = useState<WeightEntryRequest>({
-		date: format(new Date(), DATE_FORMAT),
-		weight: 65.55
+
+	const [newWeight, setNewWeight] = useState<Weight>({
+		date: format(today, DATE_FORMAT),
+		weight: 0
 	});
+
+    useEffect(() => {
+        if (!loading) {
+            const lastWeightIncludingToday = store.getWeightEntryPriorOrEqualToDate(format(today, DATE_FORMAT));
+            if (lastWeightIncludingToday !== undefined) {
+                setNewWeight({ ...newWeight, weight: lastWeightIncludingToday.weight})
+            }
+        }
+    }, [loading])
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		await createOrUpdateWeight(weightEntryRequest);
+        await addOrUpdateWeight(newWeight);
 		navigate(DASHBOARD_PATH);
 	}
 
@@ -43,9 +56,9 @@ export const AddWeightView = () => {
                             type="date"
                             className="input w-full"
                             placeholder="Date"
-                            value={weightEntryRequest.date}
-                            onChange={e => setWeightEntryRequest({
-								...weightEntryRequest,
+                            value={newWeight.date}
+                            onChange={e => setNewWeight({
+								...newWeight,
 								date: e.target.value
 							})}
                             required
@@ -57,12 +70,13 @@ export const AddWeightView = () => {
                         <input
                             id="weight-kg"
                             type="number"
+                            step={0.1}
                             className="input w-full"
                             placeholder="Your password again"
                             autoComplete="new-password"
-                            value={weightEntryRequest.weight}
-                            onChange={e => setWeightEntryRequest({
-								...weightEntryRequest,
+                            value={newWeight.weight}
+                            onChange={e => setNewWeight({
+								...newWeight,
 								weight: Number.parseFloat(e.target.value)
 							})}
                             required
