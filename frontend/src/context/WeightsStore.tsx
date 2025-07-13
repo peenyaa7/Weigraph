@@ -1,5 +1,6 @@
-import { getISOWeek, getYear } from "date-fns";
+import { getISOWeek, getYear, isAfter, parse } from "date-fns";
 import { Weight } from "../types/Weight";
+import { DATE_FORMAT } from "../constants/DateConstants";
 
 export class WeightsStore {
     private weights: Map<string, number>; // date => weight
@@ -69,12 +70,23 @@ export class WeightsStore {
      */
     getWeightEntryPriorToDate(date: string): Weight | undefined {
 
-        const index = this.sortedDates.findIndex(d => d >= date);
+        if (this.sortedDates.length == 0)
+            return undefined;
 
+        // Find first index which date is after than specified date
+        const index = this.sortedDates.findIndex(d => d >= date);
         if (index > 0) {
             const prevDate = this.sortedDates[index - 1];
             return { date: prevDate, weight: this.weights.get(prevDate)! };
         }
+
+        // Check if specified date is after than last date (e.g: future dates)
+        const lastDate = this.sortedDates[this.sortedDates.length - 1];
+        const parsedDate = parse(date, DATE_FORMAT, new Date());
+        if (isAfter(parsedDate, lastDate)) {
+            return { date: lastDate, weight: this.weights.get(lastDate)! };
+        }
+
         return undefined;
     }
     
