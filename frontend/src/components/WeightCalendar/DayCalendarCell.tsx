@@ -44,8 +44,8 @@ export const DayCalendarCell = ({ day, isDayPartOfSelectedMonth }: Props) => {
     const formatLastWeightDiffText = (lastWeight: number, currentWeight: number) => {
         let lastWeightDiffText = "";
         if (lastWeight < currentWeight) lastWeightDiffText += "+";
-        lastWeightDiffText += `${(currentWeight - lastWeight).toFixed(3)}`;
-        lastWeightDiffText += ` (${lastWeight})`; // TODO: DEBUG
+        lastWeightDiffText += `${(currentWeight - lastWeight).toFixed(2)} kg`;
+        // lastWeightDiffText += ` (${lastWeight})`; // TODO: DEBUG
         return lastWeightDiffText;
     }
 
@@ -57,7 +57,7 @@ export const DayCalendarCell = ({ day, isDayPartOfSelectedMonth }: Props) => {
     return (
         <div
             key={dayStr}
-            className={`flex flex-col border p-1 cursor-pointer ${isToday && 'bg-blue-200'} ${!isDayPartOfSelectedMonth && 'bg-neutral-300'}`}
+            className={`flex flex-col border p-1 cursor-pointer ${isToday && 'bg-blue-200'} ${!isDayPartOfSelectedMonth && !isHovering && 'bg-neutral-300'} ${isHovering && 'bg-accent'}`}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
             onClick={handleClickCell}

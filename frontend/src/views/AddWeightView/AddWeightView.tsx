@@ -18,8 +18,6 @@ export const AddWeightView = () => {
     const dayStr = day !== undefined ? format(day, DATE_FORMAT) : format(today, DATE_FORMAT);
     const isRemovableWeight = store.get(dayStr) !== undefined;
 
-    console.table(state);
-
 	const [newWeight, setNewWeight] = useState<Weight>({
 		date: dayStr,
 		weight: store.getWeightEntryPriorOrEqualToDate(dayStr)?.weight || 0
@@ -94,7 +92,7 @@ export const AddWeightView = () => {
                     </fieldset>
 
                     <button type="submit" className="btn btn-neutral mt-4">Add weight!</button>
-                    {isRemovableWeight && <button type="button" className="btn btn-warning" onClick={handleRemoveWeight}>Remove weight</button>}
+                    {isRemovableWeight && <button type="button" className="btn btn-error mt-4" onClick={handleRemoveWeight}>Remove weight</button>}
                 </form>
             </div>
         </div>
