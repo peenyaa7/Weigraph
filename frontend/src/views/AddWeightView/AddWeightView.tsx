@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { DASHBOARD_PATH } from "../../constants/PathConstants";
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
@@ -11,17 +11,23 @@ export const AddWeightView = () => {
 	const error = undefined;
     const today = new Date();
     
-    const { store, loading, addOrUpdateWeight } = useWeightsStore();
+    const { store, loading, addOrUpdateWeight, removeWeight } = useWeightsStore();
 	const navigate = useNavigate();
+    const { state } = useLocation();
+    const { day } = state;
+    const dayStr = day !== undefined ? format(day, DATE_FORMAT) : format(today, DATE_FORMAT);
+    const isRemovableWeight = store.get(dayStr) !== undefined;
+
+    console.table(state);
 
 	const [newWeight, setNewWeight] = useState<Weight>({
-		date: format(today, DATE_FORMAT),
-		weight: 0
+		date: dayStr,
+		weight: store.getWeightEntryPriorOrEqualToDate(dayStr)?.weight || 0
 	});
 
     useEffect(() => {
         if (!loading) {
-            const lastWeightIncludingToday = store.getWeightEntryPriorOrEqualToDate(format(today, DATE_FORMAT));
+            const lastWeightIncludingToday = store.getWeightEntryPriorOrEqualToDate(dayStr);
             if (lastWeightIncludingToday !== undefined) {
                 setNewWeight({ ...newWeight, weight: lastWeightIncludingToday.weight})
             }
@@ -33,6 +39,12 @@ export const AddWeightView = () => {
         await addOrUpdateWeight(newWeight);
 		navigate(DASHBOARD_PATH);
 	}
+
+    const handleRemoveWeight = async (e: React.MouseEvent) => {
+        e.preventDefault();
+        await removeWeight(dayStr);
+        navigate(DASHBOARD_PATH);
+    }
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -72,8 +84,6 @@ export const AddWeightView = () => {
                             type="number"
                             step={0.1}
                             className="input w-full"
-                            placeholder="Your password again"
-                            autoComplete="new-password"
                             value={newWeight.weight}
                             onChange={e => setNewWeight({
 								...newWeight,
@@ -84,6 +94,7 @@ export const AddWeightView = () => {
                     </fieldset>
 
                     <button type="submit" className="btn btn-neutral mt-4">Add weight!</button>
+                    {isRemovableWeight && <button type="button" className="btn btn-warning" onClick={handleRemoveWeight}>Remove weight</button>}
                 </form>
             </div>
         </div>

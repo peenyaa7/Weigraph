@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { WeightsStore } from "./WeightsStore"
 import { Weight } from "../types/Weight";
-import { createOrUpdateWeightEndpoint, getWeights } from "../api/weight";
+import { createOrUpdateWeightEndpoint, getWeights, removeWeightEndpoint } from "../api/weight";
 import { WeightsContext } from "./WeightsContext";
 
 export const WeightsProvider = ({ children }: { children: React.ReactNode }) => {
@@ -48,6 +48,11 @@ export const WeightsProvider = ({ children }: { children: React.ReactNode }) => 
             return;
         }
 
+        if (weight.weight == 0) {
+            alert("Weight cannot be zero");
+            return;
+        }
+
         try {
             await createOrUpdateWeightEndpoint({
                 date: weight.date,
@@ -59,11 +64,17 @@ export const WeightsProvider = ({ children }: { children: React.ReactNode }) => 
         }
     }
 
+    const removeWeight = async (date: string) => {
+        await removeWeightEndpoint(date);
+        store.remove(date);
+    }
+
     return (
         <WeightsContext.Provider value={{
             store,
             loading,
-            addOrUpdateWeight
+            addOrUpdateWeight,
+            removeWeight
         }}>
             {children}
         </WeightsContext.Provider>

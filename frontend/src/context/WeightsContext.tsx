@@ -6,6 +6,7 @@ type WeightsContextType = {
     store: WeightsStore;
     loading: boolean;
     addOrUpdateWeight: (weight: Weight) => Promise<void>;
+    removeWeight: (date: string) => Promise<void>;
 };
 
 export const WeightsContext = createContext<WeightsContextType>({} as WeightsContextType);

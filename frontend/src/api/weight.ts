@@ -24,3 +24,7 @@ export const getWeights = async (): Promise<WeightEntriesResponse> => {
 export const createOrUpdateWeightEndpoint = async (weightEntryRequest: WeightEntryRequest): Promise<void> => {
     await axios.post<void>(WEIGHTS_API_ENDPOINT, weightEntryRequest);
 }
+
+export const removeWeightEndpoint = async (date: string): Promise<void> => {
+    await axios.delete<void>(`${WEIGHTS_API_ENDPOINT}/${date}`);
+}
