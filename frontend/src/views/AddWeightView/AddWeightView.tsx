@@ -14,7 +14,7 @@ export const AddWeightView = () => {
     const { store, loading, addOrUpdateWeight, removeWeight } = useWeightsStore();
 	const navigate = useNavigate();
     const { state } = useLocation();
-    const { day } = state;
+    const { day } = state || { day: undefined };
     const dayStr = day !== undefined ? format(day, DATE_FORMAT) : format(today, DATE_FORMAT);
     const isRemovableWeight = store.get(dayStr) !== undefined;
 
