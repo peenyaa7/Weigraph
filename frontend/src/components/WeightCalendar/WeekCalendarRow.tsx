@@ -48,7 +48,7 @@ export const WeekCalendarRow = ({ currentMonth, yearNumber, weekNumber }: Props)
 
     return (<>
 
-        <div key={firstOfWeek.toString()} className="flex p-2 items-center h-16">
+        <div key={firstOfWeek.toString()} className={`flex p-2 items-center hidden md:block`}>
             <span className="badge badge-sm block">S-{format(firstOfWeek, 'I')}</span>
         </div>
 
@@ -62,11 +62,15 @@ export const WeekCalendarRow = ({ currentMonth, yearNumber, weekNumber }: Props)
             )
         }
 
-        <div className={`p-2 text-center`}>
+        <div className={`ml-1 p-1 text-center h-16 border border-gray-400`}>
             {weekAvg !== undefined && (<>
-                <div className={`text-sm font-light`}>{weekAvg.toFixed(3)} kg</div>
+                <div className={`text-xs md:text-sm font-light`}>
+                    <span>{weekAvg.toFixed(3)}</span><span className="hidden md:inline"> kg</span>
+                </div>
                 {lastWeekAvg && 
-                    <div className={`text-xs text-right ${lastWeekAvg && getClass(lastWeekAvg, weekAvg)}`}>{lastWeekAvg < weekAvg && '+'}{lastWeekAvg && (weekAvg - lastWeekAvg).toFixed(3)}</div> 
+                    <div className={`text-xs text-right ${lastWeekAvg && getClass(lastWeekAvg, weekAvg)}`}>
+                        {lastWeekAvg < weekAvg && '+'}{lastWeekAvg && (weekAvg - lastWeekAvg).toFixed(3)}
+                    </div> 
                 }
             </>)}
         </div>

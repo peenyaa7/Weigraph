@@ -44,7 +44,7 @@ export const DayCalendarCell = ({ day, isDayPartOfSelectedMonth }: Props) => {
     const formatLastWeightDiffText = (lastWeight: number, currentWeight: number) => {
         let lastWeightDiffText = "";
         if (lastWeight < currentWeight) lastWeightDiffText += "+";
-        lastWeightDiffText += `${(currentWeight - lastWeight).toFixed(2)} kg`;
+        lastWeightDiffText += `${(currentWeight - lastWeight).toFixed(2)}`;
         // lastWeightDiffText += ` (${lastWeight})`; // TODO: DEBUG
         return lastWeightDiffText;
     }
@@ -57,7 +57,7 @@ export const DayCalendarCell = ({ day, isDayPartOfSelectedMonth }: Props) => {
     return (
         <div
             key={dayStr}
-            className={`flex flex-col border p-1 cursor-pointer ${isToday && 'bg-blue-200'} ${!isDayPartOfSelectedMonth && !isHovering && 'bg-neutral-300'} ${isHovering && 'bg-accent'}`}
+            className={`flex flex-col border border-gray-300 p-1 cursor-pointer ${isToday && 'bg-blue-200'} ${!isDayPartOfSelectedMonth && !isHovering && 'bg-neutral-300'} ${isHovering && 'bg-accent'}`}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
             onClick={handleClickCell}
@@ -68,7 +68,9 @@ export const DayCalendarCell = ({ day, isDayPartOfSelectedMonth }: Props) => {
             <div className="grow">
                 {
                     weight !== undefined ? (
-                        <div className={`text-sm font-light`}>{weight} kg</div>
+                        <div className={`text-sm font-light`}>
+                            <span>{weight}</span><span className="hidden md:inline"> kg</span>
+                        </div>
                     ) : (
                         isHovering && <span className="text-2xl">+</span>
                     )
@@ -78,7 +80,7 @@ export const DayCalendarCell = ({ day, isDayPartOfSelectedMonth }: Props) => {
                 {
                     weight !== undefined && lastWeight !== undefined && (
                         <div className={`text-xs text-center ${getClass(lastWeight, weight)}`}>
-                            {formatLastWeightDiffText(lastWeight, weight)}
+                            <span>{formatLastWeightDiffText(lastWeight, weight)}</span><span className="hidden md:inline"> kg</span>
                         </div> 
                     )
                 }

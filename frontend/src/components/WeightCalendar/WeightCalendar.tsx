@@ -1,11 +1,15 @@
 import { useState } from "react";
-import { addMonths, eachWeekOfInterval, endOfMonth, format, getISOWeek, getYear, startOfMonth, subMonths } from "date-fns";
+import { eachWeekOfInterval, endOfMonth, format, getISOWeek, getYear, startOfMonth } from "date-fns";
 import { WeekCalendarRow } from "./WeekCalendarRow";
 import { useWeightsStore } from "../../hooks/useWeightsStore";
+import { useNavigate } from "react-router-dom";
+import { ADD_WEIGHT_PATH } from "../../constants/PathConstants";
+import { MonthNavigator } from "./MonthNavigator";
 
 export const WeightCalendar = () => {
 
     const { loading } = useWeightsStore();
+    const navigate = useNavigate();
 
     const [selectedMonth, setSelectedMonth] = useState(new Date());
 
@@ -14,40 +18,56 @@ export const WeightCalendar = () => {
     
     const weeksOfSelectedMonth = eachWeekOfInterval({ start: firstOfMonth, end: lastOfMonth }, { weekStartsOn: 1 });
 
+    const COLUMNS = [
+        { id: 'weekNumber', title: '', hiddenOnMobile: true },
+        { id: 'monday', title: 'L', hiddenOnMobile: false },
+        { id: 'tuesday', title: 'M', hiddenOnMobile: false },
+        { id: 'wednesday', title: 'X', hiddenOnMobile: false },
+        { id: 'thursday', title: 'J', hiddenOnMobile: false },
+        { id: 'friday', title: 'V', hiddenOnMobile: false },
+        { id: 'saturday', title: 'S', hiddenOnMobile: false },
+        { id: 'sunday', title: 'D', hiddenOnMobile: false },
+        { id: 'weekAvg', title: 'Media', hiddenOnMobile: false }
+    ]
+
     return (
 
             loading ? <div className="skeleton h-96 w-3xl"></div> : (
 
-                <div className="space-y-2 max-w-4xl min-w-3xl">
-                    <div className="flex justify-evenly mb-5">
+                <div className="space-y-2 max-w-4xl">
 
-                        <h2 className="text-xl font-semibold mb-2">
-                            {format(selectedMonth, 'MMMM yyyy')}
-                        </h2>
-                        <div className="flex justify-center gap-x-2 items-center">
-                            <button
-                                onClick={() => setSelectedMonth(subMonths(selectedMonth, 1))}
-                                className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300"
-                            >
-                                ← Mes anterior
-                            </button>
-                            <button
-                                onClick={() => setSelectedMonth(new Date())}
-                                className="px-3 py-1 rounded bg-blue-100 hover:bg-blue-200"
-                            >
-                                Mes actual
-                            </button>
-                            <button
-                                onClick={() => setSelectedMonth(addMonths(selectedMonth, 1))}
-                                className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300"
-                            >
-                                Mes siguiente →
-                            </button>
+
+                    {/** Grid logic:
+                     * 
+                     * Desktop grid result -> 3 columns, 1 row -> A B C
+                     * 
+                     * Mobile grid result -> 2 columns, 2 rows -> A C
+                     *                                             B
+                     * 
+                     */}
+                    <div className="grid grid-cols-2 grid-rows-2 md:grid-cols-3 md:grid-rows-1 gap-4">
+                        <div className="col-span-1 row-span-1">
+                            <h2 className="text-xl font-semibold mb-2">
+                                {format(selectedMonth, 'MMMM yyyy')}
+                            </h2>
+                        </div>
+                        <div className="col-span-1 col-start-1 col-end-3 md:col-start-2 row-span-1 row-start-2 md:row-start-1">
+                            <MonthNavigator selectedMonth={selectedMonth} setSelectedMonth={setSelectedMonth} />
+                        </div>
+                        <div className="col-span-1 row-span-1">
+                            <div className="flex justify-end">
+                                <button
+                                    onClick={() => navigate(ADD_WEIGHT_PATH)}
+                                    className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300"
+                                >
+                                    &#x2b; Nuevo peso
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <div className="grid grid-cols-9 font-semibold text-center mb-1">
-                        {['', 'L', 'M', 'X', 'J', 'V', 'S', 'D', 'Media'].map((d) => (
-                            <div key={d}>{d}</div>
+                    <div className="grid grid-cols-8 md:grid-cols-9 font-semibold text-center mb-1">
+                        {COLUMNS.map((c) => (
+                            <div className={`${c.hiddenOnMobile && 'hidden'} md:block`} key={c.id}>{c.title}</div>
                         ))}
                         {
                             weeksOfSelectedMonth.map(week => {
