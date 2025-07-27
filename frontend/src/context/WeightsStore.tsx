@@ -1,4 +1,4 @@
-import { getISOWeek, getYear, isAfter, parse } from "date-fns";
+import { getISOWeek, getISOWeekYear, isAfter, parse } from "date-fns";
 import { Weight } from "../types/Weight";
 import { DATE_FORMAT } from "../constants/DateConstants";
 
@@ -114,7 +114,7 @@ export class WeightsStore {
         const weekEntries = this.getAll().filter(e => {
             const d = new Date(e.date);
             const week = getISOWeek(d);
-            const year = getYear(d);
+            const year = getISOWeekYear(d);
             return week === weekNumber && year === yearNumber;
         });
 

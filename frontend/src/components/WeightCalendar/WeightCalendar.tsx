@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { eachWeekOfInterval, endOfMonth, format, getISOWeek, getYear, startOfMonth } from "date-fns";
+import { useMemo, useState } from "react";
+import { eachWeekOfInterval, endOfMonth, format, getISOWeek, getISOWeekYear, getYear, startOfMonth } from "date-fns";
 import { WeekCalendarRow } from "./WeekCalendarRow";
 import { useWeightsStore } from "../../hooks/useWeightsStore";
 import { useNavigate } from "react-router-dom";
@@ -13,10 +13,9 @@ export const WeightCalendar = () => {
 
     const [selectedMonth, setSelectedMonth] = useState(new Date());
 
-    const firstOfMonth = startOfMonth(selectedMonth);
-    const lastOfMonth = endOfMonth(firstOfMonth);
-    
-    const weeksOfSelectedMonth = eachWeekOfInterval({ start: firstOfMonth, end: lastOfMonth }, { weekStartsOn: 1 });
+    const firstOfMonth = useMemo(() => startOfMonth(selectedMonth), [selectedMonth]);
+    const lastOfMonth = useMemo(() => endOfMonth(firstOfMonth), [selectedMonth]);
+    const weeksOfSelectedMonth = useMemo(() => eachWeekOfInterval({ start: firstOfMonth, end: lastOfMonth }, { weekStartsOn: 1 }), [selectedMonth]);
 
     const COLUMNS = ['L', 'M', 'X', 'J', 'V', 'S', 'D', 'Media']
 
@@ -60,7 +59,7 @@ export const WeightCalendar = () => {
                         {
                             weeksOfSelectedMonth.map(week => {
                                 const weekNumber = getISOWeek(week);
-                                const yearNumber = getYear(week);
+                                const yearNumber = getISOWeekYear(week);
                                 return (
                                     <WeekCalendarRow
                                         key={`${yearNumber}-${weekNumber}`}

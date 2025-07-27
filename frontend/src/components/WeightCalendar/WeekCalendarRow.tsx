@@ -1,4 +1,4 @@
-import { addWeeks, eachDayOfInterval, endOfWeek, format, getISOWeek, getYear, isSameMonth, setWeek, setYear, startOfWeek } from "date-fns";
+import { addWeeks, eachDayOfInterval, endOfISOWeek, format, getISOWeek, getYear, isSameMonth, setISOWeek, setYear, startOfISOWeek } from "date-fns";
 import { DATE_FORMAT } from "../../constants/DateConstants";
 import { useWeightsStore } from "../../hooks/useWeightsStore";
 import { DayCalendarCell } from "./DayCalendarCell";
@@ -14,14 +14,14 @@ export const WeekCalendarRow = ({ currentMonth, yearNumber, weekNumber }: Props)
     const { store } = useWeightsStore();
 
     const getWeekRange = (year: number, week: number) => {
-        const date = setWeek(setYear(new Date(year, 0, 1), year), week);
-        const monday = startOfWeek(date, { weekStartsOn: 1 });
-        const sunday = endOfWeek(date, { weekStartsOn: 1 });
+        const date = setISOWeek(setYear(new Date(year, 0, 1), year), week);
+        const monday = startOfISOWeek(date);
+        const sunday = endOfISOWeek(date);
         return { monday, sunday };
     }
 
     const getPreviousWeek = (year: number, week: number) => {
-        const date = setWeek(setYear(new Date(year, 0, 1), year), week);
+        const date = setISOWeek(setYear(new Date(year, 0, 1), year), week);
         const dateOfPreviousWeek = addWeeks(date, -1);
         const yearOfPreviousWeek = getYear(dateOfPreviousWeek);
         const weekNumberOfPreviousWeek = getISOWeek(dateOfPreviousWeek)
