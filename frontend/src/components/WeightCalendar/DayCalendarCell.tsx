@@ -53,38 +53,40 @@ export const DayCalendarCell = ({ day, isDayPartOfSelectedMonth }: Props) => {
         navigate(ADD_WEIGHT_PATH, { state: { day: day }})
     }
 
+    const lastWeightDiffElement = (currentWeight: number | undefined, lastWeight: number | undefined) => (
+        currentWeight !== undefined && lastWeight !== undefined && (
+            <div className={`text-xs text-center ${getClass(lastWeight, currentWeight)}`}>
+                <span>{formatLastWeightDiffText(lastWeight, currentWeight)}</span><span className="hidden md:inline"> kg</span>
+            </div> 
+        )
+    );
+
 
     return (
         <div
             key={dayStr}
-            className={`flex flex-col border border-gray-300 p-1 cursor-pointer ${isToday && 'bg-blue-200'} ${!isDayPartOfSelectedMonth && !isHovering && 'bg-neutral-300'} ${isHovering && 'bg-accent'}`}
+            className={`flex flex-col border border-gray-300 cursor-pointer ${isToday && 'bg-blue-200'} ${!isDayPartOfSelectedMonth && !isHovering && 'bg-neutral-300'} ${isHovering && 'bg-accent'} pb-1`}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
             onClick={handleClickCell}
         >
-            <div className="flex justify-between">
-                <span className="text-xs">{format(day, 'd')}</span>
+            <div className="flex items-center gap-2">
+                <span className="text-xs border-gray-300 border-b-1 border-r-1 p-1">{format(day, 'd')}</span>
+                <span className="hidden md:block">{lastWeightDiffElement(weight, lastWeight)}</span>
             </div>
-            <div className="grow">
+            <div className="grow flex items-center justify-center">
                 {
                     weight !== undefined ? (
                         <div className={`text-sm font-light`}>
-                            <span>{weight}</span><span className="hidden md:inline"> kg</span>
+                            <span className="sm:text-base md:text-lg">{weight}</span><span className="hidden md:inline"> kg</span>
                         </div>
                     ) : (
                         isHovering && <span className="text-2xl">+</span>
                     )
                 }
             </div>
-            <div>
-                {
-                    weight !== undefined && lastWeight !== undefined && (
-                        <div className={`text-xs text-center ${getClass(lastWeight, weight)}`}>
-                            <span>{formatLastWeightDiffText(lastWeight, weight)}</span><span className="hidden md:inline"> kg</span>
-                        </div> 
-                    )
-                }
-
+            <div className="block md:hidden">
+                {lastWeightDiffElement(weight, lastWeight)}
             </div>
         </div>
     )

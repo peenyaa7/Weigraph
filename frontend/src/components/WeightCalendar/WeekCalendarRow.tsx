@@ -58,18 +58,18 @@ export const WeekCalendarRow = ({ currentMonth, yearNumber, weekNumber }: Props)
             )
         }
 
-        <div className="ml-1 p-1 text-center h-16 border border-gray-400 flex flex-col">
+        <div className="sm:ml-1 text-center h-20 border border-gray-400 flex flex-col pb-1">
             <div className="flex justify-between">
-                <span className="text-xs">S-{format(firstOfWeek, 'I')}</span>
+                <span className="p-1 text-xs border-b-1 border-r-1 border-gray-400">S-{format(firstOfWeek, 'I')}</span>
             </div>
-            <div className="grow text-xs md:text-sm font-light">
-                {weekAvg && (<>
-                    <span>{weekAvg.toFixed(3)}</span><span className="hidden md:inline"> kg</span>
-                </>)}
+            <div className="grow text-xs font-light flex items-center justify-center">
+                {weekAvg && (<div>
+                    <span className="sm:text-base md:text-lg">{weekAvg.toFixed(3)}</span><span className="hidden md:inline"> kg</span>
+                </div>)}
             </div>
             <div>
                 {weekAvg && lastWeekAvg && 
-                    <div className={`text-xs text-right ${lastWeekAvg && getClass(lastWeekAvg, weekAvg)}`}>
+                    <div className={`text-xs text-center md:text-right ${lastWeekAvg && getClass(lastWeekAvg, weekAvg)} md:pr-1`}>
                         {lastWeekAvg < weekAvg && '+'}{lastWeekAvg && (weekAvg - lastWeekAvg).toFixed(3)}
                     </div> 
                 }
