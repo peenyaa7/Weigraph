@@ -18,17 +18,7 @@ export const WeightCalendar = () => {
     
     const weeksOfSelectedMonth = eachWeekOfInterval({ start: firstOfMonth, end: lastOfMonth }, { weekStartsOn: 1 });
 
-    const COLUMNS = [
-        { id: 'weekNumber', title: '', hiddenOnMobile: true },
-        { id: 'monday', title: 'L', hiddenOnMobile: false },
-        { id: 'tuesday', title: 'M', hiddenOnMobile: false },
-        { id: 'wednesday', title: 'X', hiddenOnMobile: false },
-        { id: 'thursday', title: 'J', hiddenOnMobile: false },
-        { id: 'friday', title: 'V', hiddenOnMobile: false },
-        { id: 'saturday', title: 'S', hiddenOnMobile: false },
-        { id: 'sunday', title: 'D', hiddenOnMobile: false },
-        { id: 'weekAvg', title: 'Media', hiddenOnMobile: false }
-    ]
+    const COLUMNS = ['L', 'M', 'X', 'J', 'V', 'S', 'D', 'Media']
 
     return (
 
@@ -65,10 +55,8 @@ export const WeightCalendar = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="grid grid-cols-8 md:grid-cols-9 font-semibold text-center mb-1">
-                        {COLUMNS.map((c) => (
-                            <div className={`${c.hiddenOnMobile && 'hidden'} md:block`} key={c.id}>{c.title}</div>
-                        ))}
+                    <div className="grid grid-cols-8 font-semibold text-center mb-1">
+                        {COLUMNS.map(c => <div key={c}>{c}</div> )}
                         {
                             weeksOfSelectedMonth.map(week => {
                                 const weekNumber = getISOWeek(week);

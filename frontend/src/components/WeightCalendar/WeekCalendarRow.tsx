@@ -48,10 +48,6 @@ export const WeekCalendarRow = ({ currentMonth, yearNumber, weekNumber }: Props)
 
     return (<>
 
-        <div key={firstOfWeek.toString()} className={`flex p-2 items-center hidden md:block`}>
-            <span className="badge badge-sm block">S-{format(firstOfWeek, 'I')}</span>
-        </div>
-
         {
             daysOfWeeks.map(day => 
                 <DayCalendarCell
@@ -62,17 +58,22 @@ export const WeekCalendarRow = ({ currentMonth, yearNumber, weekNumber }: Props)
             )
         }
 
-        <div className={`ml-1 p-1 text-center h-16 border border-gray-400`}>
-            {weekAvg !== undefined && (<>
-                <div className={`text-xs md:text-sm font-light`}>
+        <div className="ml-1 p-1 text-center h-16 border border-gray-400 flex flex-col">
+            <div className="flex justify-between">
+                <span className="text-xs">S-{format(firstOfWeek, 'I')}</span>
+            </div>
+            <div className="grow text-xs md:text-sm font-light">
+                {weekAvg && (<>
                     <span>{weekAvg.toFixed(3)}</span><span className="hidden md:inline"> kg</span>
-                </div>
-                {lastWeekAvg && 
+                </>)}
+            </div>
+            <div>
+                {weekAvg && lastWeekAvg && 
                     <div className={`text-xs text-right ${lastWeekAvg && getClass(lastWeekAvg, weekAvg)}`}>
                         {lastWeekAvg < weekAvg && '+'}{lastWeekAvg && (weekAvg - lastWeekAvg).toFixed(3)}
                     </div> 
                 }
-            </>)}
+            </div>
         </div>
     </>)
 }
